@@ -1,0 +1,303 @@
+openapi: 3.0.1
+x-stoplight:
+  id: l8doz3b6sxnhs
+info:
+  title: Alexa Execute Lambda Request
+  version: '1.0'
+servers:
+  - url: http://localhost:8080
+paths:
+  /v3/alexa/execute:
+    parameters:
+      - schema:
+          type: string
+        name: OAuth-User-Id
+        in: header
+        required: false
+        description: Id of an existing user.
+      - schema:
+          type: string
+        in: header  
+        name: X-Request-ID
+        required: true
+    post:
+      summary: Execute lambda request
+      tags: []
+      requestBody:
+        description: Request body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlexaSkillRequest'
+      responses:
+        '200':
+          description: Result
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/DefaultAlexaSkillResponse'
+                  - $ref: '#/components/schemas/AccountLinkedEventResponse'
+        
+      operationId: execute-lambda-request
+      description: Execute lambda request
+components:
+  schemas:
+    AccountLinkedEventResponse:
+      title: AccountLinkedEventResponse
+      type: object
+      description: 'Account linked event response'
+      properties:
+        success:
+          type: boolean
+    Event:
+      title: Event
+      type: object
+      description: 'Wrapper object that hold alexa skill directive and account linked event'
+      properties:
+        header:
+          $ref: '#/components/schemas/Header'
+        endpoint:
+          $ref: '#/components/schemas/Endpoint'
+        payload:
+          oneOf:
+            - $ref: '#/components/schemas/AlexaErrorPayload'
+            - $ref: '#/components/schemas/ArmResponsePayload'
+    AlexaErrorPayload:
+      title: AlexaErrorPayload
+      type: object
+      description: 'Wrapper object that hold alexa skill directive and account linked event'
+      properties:
+        type:
+          type: string
+        message:
+          type: string
+    ArmResponsePayload:
+      title: ArmResponsePayload
+      type: object
+      description: 'Wrapper object that hold alexa skill directive and account linked event'
+      properties:
+        exitDelayInSeconds:
+          type: integer
+    DefaultAlexaSkillResponse:
+      title: DefaultAlexaSkillResponse
+      type: object
+      description: 'Wrapper object that hold alexa skill directive and account linked event'
+      properties:
+        event:
+          $ref: '#/components/schemas/Event'
+        context:
+          $ref: '#/components/schemas/Context'      
+    AlexaSkillRequest:
+      title: AlexaSkillRequest
+      type: object
+      description: 'Wrapper object that hold alexa skill directive and account linked event'
+      properties:
+        directive:
+          $ref: '#/components/schemas/Directive'
+        context:
+          $ref: '#/components/schemas/Context'
+        request:
+          $ref: '#/components/schemas/Request'
+        lambdaArn:
+          type: string
+          description: 'lambda arn without alias'
+        ipAddress:
+          type: string
+          description: 'ip address'
+      required:
+        - lambdaArn
+        - ipAddress
+    Directive:
+      title: Directive
+      type: object
+      description: 'Directive'
+      properties:
+        header:
+          $ref: '#/components/schemas/Header'
+        endpoint:
+          $ref: '#/components/schemas/Endpoint'
+        payload:
+          oneOf:
+              - $ref: '#/components/schemas/AcceptGrantPayload'
+              - $ref: '#/components/schemas/ArmPayload'
+              - $ref: '#/components/schemas/ScopePayload'
+              - $ref: '#/components/schemas/InitializeCameraStreamsPayload'
+    Endpoint:
+      title: Endpoint
+      type: object
+      description: 'Endpoint'
+      properties:
+        endpointId:
+          type: string
+          description: 'Identifier for the endpoint. The identifier must be unique across all devices owned by the user within the domain of the skill.'
+        scope:
+          type: string
+          description: 'Bearer token scope to authenticate the skill. '
+      required:
+        - endpointId
+    Request:
+      title: Request
+      type: object
+      description: 'Request'
+      properties:
+        type:
+          type: string
+          description: ''
+        body:
+          $ref: '#/components/schemas/Body'
+    Body:
+      title: Body
+      type: object
+      description: 'Body'
+      properties:
+        accessToken:
+          type: string
+          description: ''
+        
+    Context:
+      title: Context
+      type: object
+      description: 'The Context object contains a list all reportable properties of the endpoint.'
+      properties:
+        System:
+          $ref: '#/components/schemas/AlexaSystem'
+        scope:
+          type: string
+          description: 'Bearer token scope to authenticate the skill. '
+    AlexaSystem:
+      title: AlexaSystem
+      type: object
+      description: 'AlexaSystem'
+      properties:
+        apiEndpoint:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+        application:
+          $ref: '#/components/schemas/Application'
+    User:
+      title: User
+      type: object
+      description: 'User'
+      properties:
+        id:
+          type: string
+      
+    Application:
+      title: Application
+      type: object
+      description: 'Application'
+      properties:
+        applicationId:
+          type: string    
+      
+    AcceptGrantPayload:
+      title: AcceptGrantPayload
+      type: object
+      description: 'AcceptGrantPayload'
+      properties:
+        grant:
+           $ref: '#/components/schemas/Grant'
+        grantee:
+           $ref: '#/components/schemas/Grantee'
+    Grant:
+      title: Grant
+      type: object
+      description: 'Grant'
+      properties:
+        type:
+           type: string
+           description: 'type'
+        code:
+           type: string
+           description: 'description'
+    Grantee:
+      title: Grantee
+      type: object
+      description: 'Grantee'
+      properties:
+        type:
+           type: string
+           description: 'type'
+        token:
+           type: string
+           description: 'description'
+    ArmPayload:
+      title: ArmPayload
+      type: object
+      description: 'ArmPayload'
+      properties:
+        endpointId:
+          type: string
+          description: 'Identifier for the endpoint. The identifier must be unique across all devices owned by the user within the domain of the skill.'
+        scope:
+          type: string
+          description: 'Bearer token scope to authenticate the skill.'
+    ScopePayload:
+      title: ScopePayload
+      type: object
+      description: 'ScopePayload'
+      properties:
+        scope:
+          $ref: '#/components/schemas/Scope'
+    Scope:
+      title: Scope
+      type: object
+      description: 'Scope'
+      properties:
+        type:
+          type: string
+        token: 
+          type: string
+    InitializeCameraStreamsPayload:
+      title: InitializeCameraStreamsPayload
+      type: object
+      description: 'InitializeCameraStreamsPayload'
+      properties:
+        cameraStreams:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlexaV3StreamRequest'
+    AlexaV3StreamRequest:
+      title: AlexaV3StreamRequest
+      type: object
+      description: 'AlexaV3StreamRequest'
+      properties:
+        protocol:
+          type: string
+        resolution:
+          type: string
+        authorizationType:
+          type: string
+        videoCodec:
+          type: string
+        audioCodec:
+          type: string
+    Header:
+      title: Header
+      type: object
+      description: 'Identifies the event and interface.'
+      properties:
+        namespace:
+          type: string
+          description: 'Identifies the interface of the message payload. For example, Alexa, Alexa.Discovery, Alexa.PowerController.'
+        name:
+          type: string
+          description: 'Name of the directive, event, or response in the message. For example Discover, ReportState, TurnOn, AdjustPercentage, Response, ErrorResponse, StateReport, ChangeReport.'
+        messageId:
+          type: string
+          format: uuid4
+          description: 'Unique identifier for the message. Include a new value in every response and event that your skill sends.'
+        correlationToken:
+          type: string
+          description: 'Opaque token that identifies the directive message exchange. If you receive a directive from Alexa that includes a correlation token, include the same correlation token in your response message'
+        payloadVersion:
+          type: string
+          description: 'Version of the interface specified in the namespace field. Valid value: "3"'
+      required:
+        - namespace
+        - name   
+        - messageId
+        - payloadVersion
