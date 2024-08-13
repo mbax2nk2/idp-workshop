@@ -28,5 +28,5 @@ spec:
 #    - component:default/fill-in-your-name-service
 #  consumesApis:
 #    - user-api
-#  providesApis:
-#    - example-api
+  providesApis:
+    - nkenenbayev-service-api
