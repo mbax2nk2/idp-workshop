@@ -3,6 +3,8 @@ kind: API
 metadata:
   name: nkenenbayev-service-api
   description: The official CE NEXTGEN service REST APIs
+  annotations:
+    backstage.io/techdocs-ref: dir:.
 spec:
   type: openapi
   lifecycle: production
