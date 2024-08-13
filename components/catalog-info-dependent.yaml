@@ -23,9 +23,9 @@ spec:
   type: service
   owner: change-value
   lifecycle: experimental
- system: Demo
- dependsOn:
-   - component:default/nkenenbayev-service
+  system: Demo
+  dependsOn:
+    - component:default/nkenenbayev-service
 #  consumesApis:
 #    - user-api
 #  providesApis:
