@@ -23,7 +23,7 @@ spec:
   type: service
   owner: change-value
   lifecycle: experimental
-  system: Demo
+  # system: Demo
   dependsOn:
     - component:default/nkenenbayev-service
 #  consumesApis:
