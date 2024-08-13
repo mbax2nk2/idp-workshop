@@ -27,6 +27,6 @@ spec:
   dependsOn:
     - component:default/hmsalexaapi
   consumesApis:
-    - user-api
+    - hmsalexaapi-service-api
 #  providesApis:
 #    - nkenenbayev-service-api
