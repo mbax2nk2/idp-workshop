@@ -1,7 +1,7 @@
 apiVersion: backstage.io/v1alpha1
 kind: API
 metadata:
-  name: nkenenbayev-service-api
+  name: hmsalexaapi-service-api
   description: The official CE NEXTGEN service REST APIs
   annotations:
     backstage.io/techdocs-ref: dir:.
