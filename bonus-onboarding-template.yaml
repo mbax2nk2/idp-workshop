@@ -1,7 +1,7 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: bonus-onboarding-lab-yournamehere
+  name: bonus-onboarding-lab-nkenenbayev
   title: Create a cookicutter datascience app
   description: A template to create a new cookiecutter datascience app
   tags:
